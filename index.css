@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700');
+
+:root {
+    overflow: hidden;
+}
+body {
+    width: fit-content;
+    margin: 0; padding: 0;
+    background: #131319; color: #ececec;
+	font-family: 'Open Sans', sans-serif;	font-size: 14px;
+}
+#app {
+    display: flex;
+    color: #161616;
+}
+#loadingScreen {
+	display: flex;  position: absolute;
+    width: 100%;    height: 100%;
+	justify-content: center;	align-items: center;    flex-direction: column;
+    background: linear-gradient(#09090bcc,#06060892);  
+    z-index: 1280;
+}
+#loadingScreen > div {
+    animation: SPEEEEEEN 3s infinite;
+    margin-bottom: 60px;
+}
+@keyframes SPEEEEEEN {
+    from { transform: rotate(0deg); }
+    to {transform: rotate(1799deg); }
+}
+h3 {
+    margin: 6px 10px !important;
+}
+button {
+    appearance: none;
+    border-radius: 4px;
+    transition: 600ms;
+}
+button:hover {
+    transition: 200ms;
+}
+button img {
+    margin-top: 2px;
+}
+
+
+
+#modeSwitchPanel {
+    display: flex;
+    min-height: 40px;
+    background: #1c1b22;
+    user-select: none;
+}
+#logo, #debugTogglerBtn, #appModeSwitcherHandler, #appModeSwitcherHandler > * {
+    display: inline-flex;
+    align-items: center;    justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    transition: 600ms;
+}
+#logo:hover, #debugTogglerBtn:hover, #appModeSwitcherHandler:hover {
+    background: #3339;
+    transition: 200ms;
+}
+#logo:hover:active, #debugTogglerBtn:hover:active, #appModeSwitcherHandler:hover:active {
+    background: #fff2;
+    transition: 200ms;
+}
+#logo, #debugTogglerBtn {
+    width: 40px;    height: 40px;
+}
+#logo:hover > img {
+    transition: 200ms;
+}
+#logo:not(:hover) > img {
+	filter: grayscale(1) brightness(7);
+    transition: 600ms;
+}
+
+
+
+#appModeSwitcherHandler {
+    width: calc(100% - 40px - 40px);
+    height: 40px;
+    font-weight: 600;
+}
+#appModeSwitcherBtn {
+	display: inline-block; position: relative;
+	width: 72px;    height: 2px;
+	margin: 0 14px 0;
+	background: #fff3;
+	font-size: 0px;
+	transition: 200ms;
+	user-select: none;
+}
+#appModeSwitcherBtn::before {
+	position: absolute;
+	content: '';
+	top: -6px; left: 0px;
+	width: 10px; height: 10px;
+	background-color: #fff;
+	border: 2px solid #666; border-radius: 1280px;
+	box-shadow: 0 0 0 2px #fff9;
+	transition: 300ms;
+}
+#appModeSwitcher:not(:checked):not(:indeterminate) + #appModeSwitcherBtn::before {
+	transform: translateX(60px);
+}
+#appModeSwitcher:hover + #appModeSwitcherBtn::before {
+	background-color: #fff;
+	border: 2px solid #a1a3b3;
+	box-shadow: 0 0 0 2px #fff;
+}
+#appModeSwitcher:not(:indeterminate):hover:active + #appModeSwitcherBtn::before {
+    width: 20px;
+	background-color: #ccc;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 2px #a1a3b366;
+}
+#appModeSwitcher:not(:checked):not(:indeterminate):hover:active + #appModeSwitcherBtn::before {
+    left: -10px;
+}
+#appModeSwitcher:indeterminate + #appModeSwitcherBtn {
+	width: 14px;
+}
+#appModeSwitcher:indeterminate + #appModeSwitcherBtn::before {
+	transform: translateX(3px);
+    top: -3px;
+    width: 4px; height: 4px;
+   	transition: 200ms;
+}
+#appModeSwitcher:indeterminate:hover + #appModeSwitcherBtn::before {
+   	transition: 300ms;
+}
+#appModeSwitcher:indeterminate:hover:active + #appModeSwitcherBtn {
+	width: 28px;
+}
+#appModeSwitcher:indeterminate:hover:active + #appModeSwitcherBtn::before {
+	transform: translateX(10px);
+	background-color: #ccc;
+	border: 2px solid #fff;
+	box-shadow: 0 0 0 2px #a1a3b366;
+}
+
+
+
+#drawingPad {
+    width: 224px;    height: 224px;
+    background: #ecf0f1;
+}
+#drawingPad #canvas {
+    outline: 2px dashed #34495c;
+    outline-offset: -4px;
+    cursor: crosshair;
+}
+#clearDrawingPadBtn {
+	position: relative;
+	top: -38px;     left: 190px;
+}
+#predictBtn {
+	position: absolute;
+	top: 196px;     left: 190px;
+}
+#drawingPad button {
+    width: 32px;  height: 32px;
+    background-color: #ecf0f1cc;
+    border: 2px solid #444;
+    box-shadow: inset 0 0 0 0px #4448, 0 0 0 2px #ecf0f1cc !important;
+    opacity: .7;
+}
+#drawingPad button:not(:disabled):hover {
+    opacity: 1;
+}
+#drawingPad button:not(:disabled):hover:active {
+    background-color: #4442;
+    box-shadow: inset 0 0 0 2px #4448 !important;
+}
+#drawingPad button:disabled {
+    opacity: .3;
+}
+
+
+
+#trainingMode {
+    width: 224px;   height: 224px;
+    background: #b4ffe2;
+    user-select: none;
+}
+#recognitionMode {
+    width: 224px;    height: 224px;
+    background: #ffedb4;
+    user-select: none;
+}
+.topBar {
+    display: flex;    position: absolute;
+    width: 216px;    height: 22px;
+    padding: 2px 0;
+    justify-content: space-around;
+    background: #0009;    color: #ececec;
+    border-right: 8px solid #fff1;
+    font-size: 12px;    line-height: 20px;
+    z-index: 10;
+}
+.bottomBar {
+    display: flex;
+    height: 32px;
+    background: #1C1B22;    color: #ececec;
+    padding: 2px;
+}
+.bottomBar button:hover:active {
+    transition: 100ms;
+}
+.bottomBar button {
+    width: 32px;    height: 32px;
+    background: #fff2;
+    border: 0px solid #fff0;
+}
+.bottomBar button:not(:disabled):hover {
+    background: #fff3;
+}
+.bottomBar button:not(:disabled):hover:active {
+    background: #fff3;
+    border: 2px solid #fff3;
+}
+#clipboardCopyBtn, #addTypeBtn {
+    border-radius: 0 4px 4px 0;
+}
+#addTypeBtn:disabled {
+    opacity: .5;
+}
+#clipboardCopyBtn:disabled {
+    background-color: #28d232;
+    border: 2px solid #0006;
+    transition: 400ms;
+    box-shadow: inset 0 0 0 4px #0002;
+}
+input[type=text] {
+    appearance: none;
+    width: 180px; height: 26px;
+    /*! margin-right: 2px; */
+    padding-left: 6px;
+    background: #fff;
+    border: 2px solid #ddd; border-radius: 4px 0px 0px 4px;
+    font-family: 'Open Sans', sans-serif; font-size: 12px;
+    transition: 200ms;
+}
+input[type="text"]:not(:disabled):hover {
+    border-color: #ccc;
+}
+input[type="text"]:not(:disabled):hover:active {
+    border-color: #666;
+}
+input[type="text"]:not(:disabled):focus {
+    border-color: #999;
+    outline: none;
+}
+input[type="text"]:disabled {
+    background: #ddd;
+}
+
+
+
+#typeman, #resman {
+    height: 162px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    padding-top: 26px;
+}
+#typeman em, #resman em {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: 60px 30px;
+}
+#typeman > button, #resman > button {
+    width: 25%;    height: 54px;
+    overflow: hidden;
+}
+#typeman > button > small, #resman > button > small {
+	display: block;    position: relative;
+	width: 94%;
+	top: -30px;	right: -6px;
+	text-align: end;
+	overflow: hidden;  text-overflow: '%';
+}
+#typeman > button > big, #resman > button > big {
+	display: block;    position: relative;
+	width: 100%;
+	top: 5px;
+	text-align: center;
+	overflow: hidden;  text-overflow: '…';
+}
+#typeman > button > big > img, #resman > button > big > img {
+  margin: 0px;
+  position: relative;
+  top: 2px;
+}
+
+
+
+#debug {
+    background: #2c3e50;    color: #fff;
+}
+#debug > * {
+	display: block;
+	font-family: monospace, monospace;
+}
