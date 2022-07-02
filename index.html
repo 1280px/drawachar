@@ -10,10 +10,16 @@
     <link rel="icon" href="icon/logo/icon-16.png">
 </head>
 <body>
-    <span id="loadingScreen"><div>ඞඞඞඞඞ</div><b>DʀᴀᴡAᴄʜᴀR TFJS b1.20 · Loading Model...</b></span>
+    <div id="loadingScreen">
+        <div id="loadingSPEEEEEEN">ඞඞඞඞඞ</div>
+        <span style="display: inline;">
+            <b>DʀᴀᴡAᴄʜᴀR · </b><b id="loadingLabel">Waiting for index.js...</b>
+        </span>
+    </div>
 
     <header id="modeSwitchPanel">
-        <a id="logo" href="https://github.com/1280px/DrawAchaR" title="by 1280px, 2022"><img src="icon/logo/icon.svg"></a><label id="appModeSwitcherHandler" title="Recognition/Training Mode Switcher&#13;Tip: right click to show both!"><input type="checkbox" id="appModeSwitcher" style="display: none;">
+        <button id="filemanTogglerBtn" title="Main Menu"><img src="icon/logo/icon.svg"></button>
+        <label id="appModeSwitcherHandler" title="Recognition/Training Mode Switcher&#13;Tip: right click to show both!"><input type="checkbox" id="appModeSwitcher" style="display: none;">
             <label id="appModeSwitcherBtn" for="appModeSwitcher" style="order: 2;">
                 -- А я-таки уверен, что нужно пеликаном быть!
                 --- Пеликаны смертны... 
@@ -21,15 +27,22 @@
             </label>
             <label for="appModeSwitcher" style="order: 1; margin-top: -1px;">Recognition</label>
             <label for="appModeSwitcher" style="order: 3; margin-top: -1px;">Training</label>
-        </label><label id="debugTogglerBtn"><input type="checkbox" id="debugToggler" style="display: none;"><img src="icon/debug.svg"></label>
+        </label><label id="debugTogglerBtn" title="Debug Info"><input type="checkbox" id="debugToggler" style="display: none;"><img src="icon/debug.svg"></label>
     </header>
+
+    <aside id="fileman" style="transform: translateY(-115%);">
+        <button id="filemanImport"><img src="icon/import.svg">Import Classifier Data...</button>
+        <button id="filemanExport"><img src="icon/export.svg">Export Classifier Data...</button>
+        <button id="filemanWipe"><img src="icon/wipe.svg">Wipe ALL Data</button>
+        <a id="filemanAbout" href="https://github.com/1280px/DrawAchaR" title="by 1280px, 2022.&#13;See the GitHub page for more information.">DʀᴀᴡAᴄʜᴀR TFJS 1.30 [WIP]</a>
+    </aside>
 
     <main id="app">
         <section id="drawingPad">
-            <canvas width="224" height="224" id="canvas"></canvas><button id="predictBtn" title="Predict" disabled><img src="icon/confirm.svg"></button><button id="clearDrawingPadBtn" title="Clear Canvas&#13;Tip: right-click on canvas to quickly clear it"><img src="icon/clear.svg"></button>
+            <canvas width="224" height="224" id="canvas"></canvas><button id="predictBtn" title="Predict" disabled><img src="icon/confirm.svg"></button><button id="clearDrawingPadBtn" title="Clear Canvas&#13;Tip: right-click on the canvas to quickly clear it"><img src="icon/clear.svg"></button>
         </section>
         <section id="recognitionMode">
-            <div class="topBar"><label title="When enabled, predicts the doodle automatically&#13;after every new stroke on the canvas."><input type="checkbox" id="autopreditionToggler">Auto-predict</label><label title="When enabled, clicking on a example&#13;adds the doodle to this symbol category"><input type="checkbox" id="autotrainToggler">Auto-train</label></div>
+            <div class="topBar"><label title="When enabled, predicts the doodle automatically&#13;after every new stroke on the canvas."><input type="checkbox" id="autopreditionToggler">Auto-predict</label><label title="When enabled, right-clicking on a symbol category&#13;adds the doodle to it automatically."><input type="checkbox" id="autotrainToggler">Auto-train</label></div>
             <div id="resman">
                 <em>Draw a character using your mouse.</em>
             </div>
@@ -49,18 +62,10 @@
     </main>
 
     <footer id="debug">
-        <b>==== debug info ====</b> (<a href="#" target="_blank">new tab</a>)
+        <b>==== debug info ====</b>
         <span>On-canvas mouse coords: <b id="debugCoords">(none)</b></span>
         <span>Current <abbr title="Formula: (2 + (cSum / cLen^(√2))">KNN Coefficient</abbr>: <b id="debugKNNC">(initial value)</b><br>&nbsp;</span>
-        <b>Classifier Data:
-            <button id="floadExamplesBtn" disabled>[WIP] f-load</button>
-            <button id="fsaveExamplesBtn" disabled>[WIP] f-save</button>
-            <button id="wipeExamplesBtn">!! wipe !!</button>
-        </b><b>User Configs:
-            <button id="floadConfigsBtn" disabled>[WIP] f-load</button>
-            <button id="fsaveConfigsBtn" disabled>[WIP] f-save</button>
-            <button id="wipeConfigsBtn">!! reset !!</button>
-        </b>
+        <span>Last saved: <b id="debugLastSaved">(unknown)</b></span>
     </footer>
 
     <script src="index.js"></script>

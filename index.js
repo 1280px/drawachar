@@ -1,7 +1,3 @@
-/* ---- DʀᴀᴡAᴄʜᴀR TFJS b1.20 ---- */
-
-
-
 /* ### ###   TEH SHAPES CLASSIFIER   ### ### */
 let classifier = [];
 let net;
@@ -11,13 +7,15 @@ let KNNCoefficient = 3; // hand-picked value that works the best, LOL
 (which gets extended by KNN to use custom data) to load */
 async function loadClassifier() {
     if (!Configs.skipModelLoad) {
+        document.getElementById('loadingLabel').innerHTML = 'Creating KNN Classifier...'
         classifier = knnClassifier.create();
+        classifier.clearAllClasses(); // in case of cached data not being deleted
+
+        document.getElementById('loadingLabel').innerHTML = 'Fetching MobileNet...'
         net = await mobilenet.load();
 
-        classifier.clearAllClasses(); // in case of cached data not being deleted
-    }
-    if (document.getElementById('loadingScreen') != null) {
-        document.getElementById('loadingScreen').remove();
+        document.getElementById('loadingLabel').innerHTML = 'Done!'
+        document.getElementById('loadingScreen').style.display = 'none';
     }
 }
 
@@ -34,7 +32,7 @@ function addExample(btn) {
 
     canvasImage.dispose();
 
-    console.log(`[D] added example to "${btnLabel}":`, classifier);
+    if (Configs.showDebug) { console.log(`[D] added example to "${btnLabel}":`, classifier); }
     updateTypemanStats();
     updateKNNCoefficient();
 }
@@ -80,7 +78,7 @@ function formatResultData(raw) {
     outputArray.sort(function(a, b) {
         return b[1] - a[1];
     });
-    console.log(`[R] raw data: `, raw.confidences, `\n    formatted data: `, outputArray);
+    if (Configs.showDebug) { console.log(`[R] raw data: `, raw.confidences, `\n    formatted data: `, outputArray); }
     return outputArray;
 }
 
@@ -175,7 +173,7 @@ function updateTypemanStats() {
 
     for (let i = 0; i < cKeys.length; i++) {
         if (!isNaN(cValues[i]) && isNaN(cValues[i]) != undefined) {
-            if (cValues[i] <= 999) {
+            if (cValues[i] <= 9999) {
                 document.getElementById('typeman').getElementsByClassName(cKeys[i])[0]
                 .innerHTML = ( 
                     `<big>${cKeys[i]}</big><small>x${cValues[i]}</small>`
@@ -183,7 +181,7 @@ function updateTypemanStats() {
             } else {
                 document.getElementById('typeman').getElementsByClassName(cKeys[i])[0]
                 .innerHTML = ( 
-                    `<big>${cKeys[i]}</big><small>9999+</small>`
+                    `<big>${cKeys[i]}</big><small>10K+</small>`
                 );
             }
         }
@@ -201,13 +199,7 @@ function updateKNNCoefficient() {
     }
 
     KNNCoefficient = parseInt(2 + Math.floor( cSum / cLen**Math.sqrt(2) ));
-    document.getElementById('debugKNNC').innerHTML = KNNCoefficient;
-}
-
-/* wipe button, just in case */
-document.getElementById('wipeExamplesBtn').onclick = function() {
-    classifier = knnClassifier.create();
-    init();
+    document.getElementById('debugKNNC').innerHTML = `${KNNCoefficient} (${cSum}, ${cLen})`;
 }
 
 
@@ -301,6 +293,23 @@ document.getElementById('clearDrawingPadBtn').onclick = function() {
 
 
 
+/* ### ###  MAIN MENU FUNCTIONALITY  ### ### */
+/* show/hide menu button */
+document.getElementById('filemanTogglerBtn').onclick = function() {
+    document.getElementById('fileman').style.transform != 'translateY(-115%)'
+        ? document.getElementById('fileman').style.transform = 'translateY(-115%)'
+        : document.getElementById('fileman').style.transform = 'translateY(0%)';
+}
+
+/* wipe all data button */
+document.getElementById('filemanWipe').onclick = function() {
+    classifier = knnClassifier.create();
+    DefaultifyConfigs();
+    init();
+}
+
+
+
 /* ### ###  OTHER GUI FUNCTIONALITY  ### ### */
 /* add warning if no examples found */
 function CheckForNoExamples() {
@@ -332,11 +341,6 @@ function resultBtnOnSelect(btn) {
     } else {
         document.getElementById('clipboardField').value += (btn.className);
     }
-
-    /* autotrain example checker */
-    if (Configs.useAutotrain && isInteracted) {
-        addExample(btn);
-    }
 }
 
 /* result btn when right-clicked */
@@ -356,12 +360,12 @@ function quickCopy(btn) {
         addExample(btn);
     }
 
-    return false;
+    return false; // don't show context menu
 }
 
 
 
-/* ### ###   CONFIG LOAD & STORAGE   ### ### */
+/* ### ###   CONFIG LOAD AND STORE   ### ### */
 /* default configs loading */
 const defaultConfigs = {
     skipModelLoad: 0,       // Disables shapes classifier loading, useful for UI testing | [DEFAULT - 1]; 0 - no; 1 - yes
@@ -373,20 +377,17 @@ const defaultConfigs = {
 function DefaultifyConfigs() {
     Configs = Object.assign({}, defaultConfigs);
     updateShownAppMode();
-    updateOtherConfigs();
+    updateUItoConfigs();
 }
 
 let Configs = {};
-
 /* clone default configs object unless they loaded from somewhere else (WIP) */
 if (true != true) {
     alert('wait what :O'); // one day I'll replace this with an actual code, I swear!
 } else {
     DefaultifyConfigs();
 }
-document.getElementById('wipeConfigsBtn').onclick = function() {
-    DefaultifyConfigs();
-}
+
 
 
 /* ### ###    UI SECTIONS CONFIGS    ### ### */
@@ -432,24 +433,24 @@ function updateShownAppMode() {
 /* show/hide debug */
 document.getElementById('debugToggler').addEventListener('change', function() {
     debugToggler.checked ? Configs.showDebug = 1 : Configs.showDebug = 0;
-    updateOtherConfigs();
+    updateUItoConfigs();
 });
 
 /* autoprediction toggler */
 document.getElementById('autopreditionToggler').addEventListener('change', function() {
-    autopreditionToggler.checked ? Configs.useAutoprediction = 1: Configs.useAutoprediction = 0;
-    updateOtherConfigs();
+    autopreditionToggler.checked ? Configs.useAutoprediction = 1 : Configs.useAutoprediction = 0;
+    updateUItoConfigs();
 });
 
 /* autotrain toggler */
 document.getElementById('autotrainToggler').addEventListener('change', function() {
-    autotrainToggler.checked ? Configs.useAutotrain = 1: Configs.useAutotrain = 0;
-    updateOtherConfigs();
+    autotrainToggler.checked ? Configs.useAutotrain = 1 : Configs.useAutotrain = 0;
+    updateUItoConfigs();
 });
 
 
-/* other configs updater */
-function updateOtherConfigs() {
+/* update UI correspondingly to current Configs data */
+function updateUItoConfigs() {
     if (Configs.showDebug) {
         document.getElementById('debugToggler').checked = true;
         document.getElementById('debug').style.display = 'block';
@@ -461,9 +462,7 @@ function updateOtherConfigs() {
     if (Configs.useAutoprediction) {
         document.getElementById('autopreditionToggler').checked = true;
         document.getElementById('predictBtn').style.display = 'none';
-        if (isInteracted) {
-            predict();
-        }
+        if (isInteracted) predict();
     } else {
         document.getElementById('autopreditionToggler').checked = false;
         document.getElementById('predictBtn').style.display = 'unset';
@@ -483,11 +482,9 @@ function init() {
     loadClassifier();
     resetCanvas();
     updateShownAppMode();
-    updateOtherConfigs();
+    updateUItoConfigs();
     CheckForNoExamples();
-    if (Configs.skipModelLoad) {
-        alert('[WARNING!] Model loading was skipped, KNN Classifier will NOT work!')
-    }
+    if (Configs.skipModelLoad) { alert('[WARNING!] Model loading was skipped, KNN Classifier will NOT work!'); }
     console.log('*beep* index.js initialized');
 }
 
