@@ -11,9 +11,9 @@
 </head>
 <body>
     <div id="loadingScreen">
-        <div id="loadingSPEEEEEEN">ඞඞඞඞඞ</div>
+        <img id="loadingSPEEEEEEN" src="icon/hourglass.svg">
         <span style="display: inline;">
-            <b>DʀᴀᴡAᴄʜᴀR · </b><b id="loadingLabel">Waiting for index.js...</b>
+            <b id="loadingLabel">Waiting for init.js...</b>
         </span>
     </div>
 
@@ -27,14 +27,27 @@
             </label>
             <label for="appModeSwitcher" style="order: 1; margin-top: -1px;">Recognition</label>
             <label for="appModeSwitcher" style="order: 3; margin-top: -1px;">Training</label>
-        </label><label id="debugTogglerBtn" title="Debug Info"><input type="checkbox" id="debugToggler" style="display: none;"><img src="icon/debug.svg"></label>
+        </label>
+        <button id="viewAsGridBtn" title="View as Grid"><img src="icon/view-grid.svg"></button>
+        <button id="viewAsListBtn" title="View as List" style="display: none;"><img src="icon/view-list.svg"></button>
     </header>
 
     <aside id="fileman" style="transform: translateY(-115%);">
+        <div id="multisetSwitchHandler" style="display: none;">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button><br>
+            <button>5</button>
+            <button>6</button>
+            <button>7</button>
+            <button>8</button>
+        </div>
         <button id="filemanImport"><img src="icon/import.svg">Import Classifier Data...</button>
         <button id="filemanExport"><img src="icon/export.svg">Export Classifier Data...</button>
-        <button id="filemanWipe"><img src="icon/wipe.svg">Wipe ALL Data</button>
-        <a id="filemanAbout" href="https://github.com/1280px/DrawAchaR" title="by 1280px, 2022.&#13;See the GitHub page for more information.">DʀᴀᴡAᴄʜᴀR TFJS 1.30 [WIP]</a>
+        <button id="debugTogglerBtn"><img src="icon/debug.svg">Toggle Debug Info</button>
+        <button id="filemanWipe"><img src="icon/wipe.svg">Wipe Classifier Data</button>
+        <a id="filemanAbout" href="https://github.com/1280px/DrawAchaR" title="by 1280px, 2020–2022.&#13;See the GitHub page for more information">DʀᴀᴡAᴄʜᴀR TFJS 1.30 [WIP]</a>
     </aside>
 
     <main id="app">
@@ -43,7 +56,7 @@
         </section>
         <section id="recognitionMode">
             <div class="topBar"><label title="When enabled, predicts the doodle automatically&#13;after every new stroke on the canvas."><input type="checkbox" id="autopreditionToggler">Auto-predict</label><label title="When enabled, right-clicking on a symbol category&#13;adds the doodle to it automatically."><input type="checkbox" id="autotrainToggler">Auto-train</label></div>
-            <div id="resman">
+            <div id="resman" class="viewAsGrid">
                 <em>Draw a character using your mouse.</em>
             </div>
             <div class="bottomBar">
@@ -51,9 +64,9 @@
             </div>
         </section>
         <section id="trainingMode">
-            <div class="topBar">&nbsp;Pick an example you want to train...</div>
-            <div id="typeman">
-                <em>Oh no! Unknown error, no examples loaded.</em>
+            <div class="topBar"><span id="typemanTooltip">&nbsp;Pick an example to train...</span><button id="removalModeTogglerBtn" title="Toggle Removal Mode"><img src="icon/remove.svg"></button></div>
+            <div id="typeman" class="viewAsGrid">
+                <em>Examples aren't loaded yet, please wait...</em>
             </div>
             <div class="bottomBar">
                 <input type="text" id="addTypeInput" placeholder="...or add a new one!" disabled><button id="addTypeBtn" title="Add to a New Category" disabled><img src="icon/add.svg"></button>
@@ -65,8 +78,16 @@
         <b>==== debug info ====</b>
         <span>On-canvas mouse coords: <b id="debugCoords">(none)</b></span>
         <span>Current <abbr title="Formula: (2 + (cSum / cLen^(√2))">KNN Coefficient</abbr>: <b id="debugKNNC">(initial value)</b><br>&nbsp;</span>
-        <span>Last saved: <b id="debugLastSaved">(unknown)</b></span>
+        <span>See debug logging in DevTools for more information.</span>
     </footer>
 
-    <script src="index.js"></script>
+    <script async src="js/classifier.js"></script>
+    <script async src="js/setsTypeman.js"></script>
+    <script async src="js/setsLoadSave.js"></script>
+    <script async src="js/configs.js"></script>
+    <script async src="js/canvas.js"></script>
+    <script async src="js/UI.js"></script>
+    <script async src="js/UIUpdater.js"></script>
+
+    <script defer src="js/init.js"></script>
 </body></html>
