@@ -1,22 +1,27 @@
 {
-  "description": "Toffee is a confection made by caramelizing sugar or molasses along with butter, and occasionally flour.",
-  "manifest_version": 2,
-  "name": "DrawAchaR",
-  "version": "1.30",
-  "icons": {
-    "32": "icon/logo/icon-32.png",
-    "64": "icon/logo/icon-64.png"
-  },
+    "description": "Don't look for a symbol, just draw it!",
+    "manifest_version": 2,
+    "name": "DrawAchaR",
+    "version": "1.30",
+    "icons": {
+        "32": "icon/logo/icon-32.png",
+        "64": "icon/logo/icon-64.png"
+    },
 
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self' 'unsafe-eval';",
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self' 'unsafe-eval';",
 
-  "background": {
-    "page": ["index.html"]
-  },
+    "background": {
+        "page": [
+            "index.html"
+        ],
+        "scripts": [
+            "init.js", "classifier.js"
+        ]
+    },
 
-  "browser_action": {
-    "default_icon": "icon/logo/icon-16.png",
-    "default_title": "DrawAchaR Input Panel",
-    "default_popup": "index.html"
-  }
+    "browser_action": {
+        "default_icon": "icon/logo/icon-16.png",
+        "default_title": "DrawAchaR Input Panel",
+        "default_popup": "index.html"
+    }
 }

@@ -1,12 +1,12 @@
 // UI_* files contain JS code for GUI elements, isolated from any actual functions
 
-document.getElementById('clearDrawingPadBtn').onclick = function() {
+/* clear canvas button */
+document.getElementById('clearDrawingPadBtn').onclick = () => {
     resetCanvas();
 }
 
-/* presiction used by the "Predict" button (if autoprediction is disabled) */
-document.getElementById('predictBtn').onclick = async function() {
+/* predict button (only shown if autopredict is disabled) */
+document.getElementById('predictBtn').onclick = async () => {
     predict();
-    resetCanvas();
     document.getElementById('predictBtn').disabled = true;
 }

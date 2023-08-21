@@ -12,15 +12,14 @@
 <body>
     <div id="loadingScreen">
         <img id="loadingSPEEEEEEN" src="icon/hourglass.svg">
-        <span style="display: inline;">
-            <b id="loadingLabel">Waiting for init.js...</b>
-        </span>
+        <b id="loadingLabel">Waiting for init.js...</b>
     </div>
 
-    <header id="modeSwitchPanel">
+    <header>
         <button id="filemanTogglerBtn" title="Main Menu"><img src="icon/logo/icon.svg"></button>
-        <label id="appModeSwitcherHandler" title="Recognition/Training Mode Switcher&#13;Tip: right click to show both!"><input type="checkbox" id="appModeSwitcher" style="display: none;">
-            <label id="appModeSwitcherBtn" for="appModeSwitcher" style="order: 2;">
+        <label id="appModeSwitcherHandler" title="Recognition/Training Mode Switcher&#13;Tip: right click to show both!">
+            <input type="checkbox" id="appModeSwitcher" style="display: none;" checked>
+            <label id="appModeSwitcherBtn" for="appModeSwitcher">
                 -- А я-таки уверен, что нужно пеликаном быть!
                 --- Пеликаны смертны... 
                 -- Люди тоже.
@@ -33,29 +32,42 @@
     </header>
 
     <aside id="fileman" style="transform: translateY(-115%);">
-        <div id="multisetSwitchHandler" style="display: none;">
-            <button>1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>4</button><br>
-            <button>5</button>
-            <button>6</button>
-            <button>7</button>
-            <button>8</button>
+        <div style="display: none;">
+            <p>Classifier data profiles:</p>
+            <div id="multisetHandler">
+                <button title="Profile 1" class="empty selected">1</button>
+                <button title="Profile 2" class="empty">2</button>
+                <button title="Profile 3" class="empty">3</button>
+                <button title="Profile 4" class="empty">4</button>
+            </div>
+            <hr>
         </div>
-        <button id="filemanImport"><img src="icon/import.svg">Import Classifier Data...</button>
+        <label id="filemanImportHandler">
+            <input id="filemanImportBtn" type="file" style="display: none;">
+            <img src="icon/import.svg">Import Classifier Data...</button>
+        </label>
         <button id="filemanExport"><img src="icon/export.svg">Export Classifier Data...</button>
-        <button id="debugTogglerBtn"><img src="icon/debug.svg">Toggle Debug Info</button>
+        <button id="filemanToggleDebug"><img src="icon/debug.svg">Toggle Debug Info</button>
         <button id="filemanWipe"><img src="icon/wipe.svg">Wipe Classifier Data</button>
-        <a id="filemanAbout" href="https://github.com/1280px/DrawAchaR" title="by 1280px, 2020–2022.&#13;See the GitHub page for more information">DʀᴀᴡAᴄʜᴀR TFJS 1.30 [WIP]</a>
+        <hr>
+        <a href="https://github.com/1280px/DrawAchaR" target="_blank" title="by 1280px, 2020–2023.&#13;Visit this project's GitHub repo for more information.">DʀᴀᴡAᴄʜᴀR TFJS 1.30</a>
     </aside>
 
     <main id="app">
         <section id="drawingPad">
-            <canvas width="224" height="224" id="canvas"></canvas><button id="predictBtn" title="Predict" disabled><img src="icon/confirm.svg"></button><button id="clearDrawingPadBtn" title="Clear Canvas&#13;Tip: right-click on the canvas to quickly clear it"><img src="icon/clear.svg"></button>
+            <canvas width="224" height="224" id="canvas"></canvas>
+            <button id="predictBtn" title="Predict" disabled><img src="icon/confirm.svg"></button>
+            <button id="clearDrawingPadBtn" title="Clear Canvas&#13;Tip: right-click on the canvas to quickly clear it"><img src="icon/clear.svg"></button>
         </section>
         <section id="recognitionMode">
-            <div class="topBar"><label title="When enabled, predicts the doodle automatically&#13;after every new stroke on the canvas."><input type="checkbox" id="autopreditionToggler">Auto-predict</label><label title="When enabled, right-clicking on a symbol category&#13;adds the doodle to it automatically."><input type="checkbox" id="autotrainToggler">Auto-train</label></div>
+            <div class="topBar">
+                <label title="When enabled, predicts the doodle automatically&#13;after every new stroke on the canvas.">
+                    <input type="checkbox" id="autopreditionToggler">Auto-predict
+                </label>
+                <label title="When enabled, selecting a symbol category&#13;adds the doodle as example to its class automatically.">
+                    <input type="checkbox" id="autotrainToggler">Auto-train
+                </label>
+            </div>
             <div id="resman" class="viewAsGrid">
                 <em>Draw a character using your mouse.</em>
             </div>
@@ -63,22 +75,28 @@
                 <input type="text" id="clipboardField" placeholder="LMB to add, RMB to quick copy"><button id="clipboardCopyBtn" title="Copy All (clears the field)"><img src="icon/copy-all.svg"></button>
             </div>
         </section>
-        <section id="trainingMode">
-            <div class="topBar"><span id="typemanTooltip">&nbsp;Pick an example to train...</span><button id="removalModeTogglerBtn" title="Toggle Removal Mode"><img src="icon/remove.svg"></button></div>
+        <section id="trainingMode" style="display: none;">
+            <div class="topBar">
+                <span id="typemanTooltip">&nbsp;Pick a class to add example...</span>
+                <button id="removalModeTogglerBtn" title="Toggle Removal Mode"><img src="icon/remove.svg"></button>
+            </div>
             <div id="typeman" class="viewAsGrid">
                 <em>Examples aren't loaded yet, please wait...</em>
             </div>
             <div class="bottomBar">
-                <input type="text" id="addTypeInput" placeholder="...or add a new one!" disabled><button id="addTypeBtn" title="Add to a New Category" disabled><img src="icon/add.svg"></button>
+                <input type="text" id="addTypeInput" placeholder="...or create a new one!" disabled><button id="addTypeBtn" title="Add to a New Category" disabled><img src="icon/add.svg"></button>
             </div>
         </section>
     </main>
 
-    <footer id="debug">
+    <footer id="debug" style="display: none;">
         <b>==== debug info ====</b>
-        <span>On-canvas mouse coords: <b id="debugCoords">(none)</b></span>
-        <span>Current <abbr title="Formula: (2 + (cSum / cLen^(√2))">KNN Coefficient</abbr>: <b id="debugKNNC">(initial value)</b><br>&nbsp;</span>
-        <span>See debug logging in DevTools for more information.</span>
+        <span>On-canvas mouse position: <b id="debugCoords">(none)</b></span>
+        <span>Current <abbr title="Formula: 2 + (cSum / cLen^(√2))">KNN Coefficient</abbr>: <b id="debugKNNC">(initial)</b></span>
+        <span>Latest classification time: <b id="debugBenchmark">(none)</b> ms</span>
+        <span>Set last saved: <b id="debugLastSaved">(unknown)</b></span>
+
+        <span><br>See debug logging in DevTools for more information.</span>
     </footer>
 
     <script defer src="js/canvas.js"></script>

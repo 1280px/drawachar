@@ -1,14 +1,20 @@
 // UI_* files contain JS code for GUI elements, isolated from any actual functions
 
-/* wipe all data button */
+/* import data menu item */
+document.getElementById("filemanImportBtn").onchange = (event) => importSet(event);
+
+/* export data menu item */
+document.getElementById('filemanExport').onclick = () => exportSet();
+
+/* show/hide debug menu item */
+document.getElementById('filemanToggleDebug').onclick = () => {
+    Configs.showDebug = document.getElementById('debug').style.display === "none";
+    saveConfigs();
+    configsUpdateUI();
+};
+
+/* wipe all data menu item */
 document.getElementById('filemanWipe').onclick = () => {
     localStorage.removeItem('dataset');
     init();
 }
-
-/* show/hide debug */
-document.getElementById('debugTogglerBtn').onclick = () => {
-    document.getElementById('debug').style.display == "none" ? Configs.showDebug = 1 : Configs.showDebug = 0;
-    saveConfigs();
-    updateUI();
-};

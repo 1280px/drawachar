@@ -1,66 +1,53 @@
-/* random stroke color, just for fun */
-function randomizeStrokeColor() {
-    const val = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += val[parseInt(Math.random() * val.length)];
-    }
-    ctx.strokeStyle = color;
-}
-
-let canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+let canvas = document.getElementById("canvas"), ctx = canvas.getContext("2d");
+let isMousedown = false, isInteracted = false;
+ctx.lineWidth = 5;
 
 
 
 /* handle mouse events on canvas */
-let isMousedown = false, isInteracted = false;
-ctx.lineWidth = 5;
-
-canvas.onmousedown = function(e) {
-    let x = e.pageX - canvas.offsetLeft, y = e.pageY - canvas.offsetTop;
+canvas.onmousedown = (event) => {
+    let x = event.pageX - canvas.offsetLeft, y = event.pageY - canvas.offsetTop;
     isMousedown = true;
     ctx.beginPath();
     ctx.moveTo(x, y);
 
-    document.getElementById('clearDrawingPadBtn').style.display = 'none';
-    document.getElementById('predictBtn').style.display = 'none';
+    document.getElementById("clearDrawingPadBtn").style.display = "none";
+    document.getElementById("predictBtn").style.display = "none";
 
     return false;
 };
 
-canvas.onmousemove = function(e) {
-    let x = e.pageX - canvas.offsetLeft, y = e.pageY - canvas.offsetTop;
-    document.getElementById('debugCoords').innerHTML = `(${x}; ${y})`;
+canvas.onmousemove = (event) => {
+    let x = event.pageX - canvas.offsetLeft, y = event.pageY - canvas.offsetTop;
+    if (Configs.showDebug) document.getElementById("debugCoords").innerHTML = `(${x}; ${y})`;
+
     if (isMousedown) {
         ctx.lineTo(x, y);
         ctx.stroke();
-
-        if (!isInteracted && !document.getElementById('typeman').classList.contains('removalMode')) {
-            for (let i in document.getElementById('typeman').getElementsByTagName('button')) {
-                document.getElementById('typeman').getElementsByTagName('button')[i].disabled = false;
-              }
-              addTypeInput.disabled = false;
-              isInteracted = true;
-        }
+        
+        isInteracted = true;
+        updateTypemanAvailability()
     }
 };
 
-canvas.onmouseup = function() {
+canvas.onmouseup = () => {
     isMousedown = false;
-    if (Configs.useAutoprediction && isInteracted) {
-        predict();
+
+    if (isInteracted) {
+        Configs.useAutoprediction
+            ? predict()
+            : document.getElementById("predictBtn").style.display = "unset";
     }
-    if (!Configs.useAutoprediction && isInteracted) {
-        document.getElementById('predictBtn').style.display = 'unset';
-    }
-    document.getElementById('predictBtn').disabled = false;
-    document.getElementById('clearDrawingPadBtn').style.display = 'unset';
+
+
+    document.getElementById("predictBtn").disabled = false;
+    document.getElementById("clearDrawingPadBtn").style.display = "unset";
 };
 
-canvas.oncontextmenu = function(event) {
+canvas.oncontextmenu = (event) => {
     event.preventDefault();
     resetCanvas();
-}
+};
 
 
 
@@ -71,15 +58,19 @@ function resetCanvas() {
     isMousedown = false; // prevent random lines due to the mouse loss
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     randomizeStrokeColor();
+    
+    document.getElementById("predictBtn").disabled = true;
+    isInteracted = false;
+    updateTypemanAvailability();
+}
 
-    if (isInteracted) {
-        for (let i in document.getElementById('typeman').getElementsByTagName('button')) {
-            document.getElementById('typeman').getElementsByTagName('button')[i].disabled = true;
-          }
-          addTypeInput.disabled = true;
-          isInteracted = false;
-          document.getElementById('predictBtn').disabled = true;
+/* random stroke color, just for fun */
+function randomizeStrokeColor() {
+    const val = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        color += val[parseInt(Math.random() * val.length)];
     }
+    ctx.strokeStyle = color;
 }

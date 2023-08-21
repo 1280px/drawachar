@@ -1,19 +1,16 @@
-async function init(initMode) {
-    if (initMode == 'full') {
-        loadClassifier();
-    }
-    else {
-        document.getElementById('loadingLabel').innerHTML = 'Loading sets and configs...';
-        loadConfigs();
-        loadSets();
+async function init() {
+    await loadClassifier();
 
-        document.getElementById("addTypeInput").value = '';
-        updateUI();
-        resetCanvas();
+    document.getElementById('loadingLabel').innerHTML = 'Loading sets and configs...';
+    await loadConfigs();
+    await loadSet();
 
-        console.log('*beep* JS initialized');
-        document.getElementById('loadingScreen').style.display = 'none';
-    }
+    configsUpdateUI();
+    updateTypemanAvailability();
+
+    document.getElementById('loadingLabel').innerHTML = 'Done!';
+    document.getElementById('loadingScreen').style.display = 'none';
+    console.info('*beep* JS initialized');
 }
 
-window.addEventListener('load', init('full'));
+window.addEventListener('load', init());

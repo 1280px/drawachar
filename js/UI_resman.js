@@ -2,14 +2,35 @@
 
 /* autoprediction toggler */
 document.getElementById('autopreditionToggler').onclick = () => {
-    autopreditionToggler.checked ? Configs.useAutoprediction = 1 : Configs.useAutoprediction = 0;
+    Configs.useAutoprediction = autopreditionToggler.checked;
     saveConfigs();
-    updateUI();
+    configsUpdateUI();
 };
 
 /* autotrain toggler */
 document.getElementById('autotrainToggler').onclick = () => {
-    autotrainToggler.checked ? Configs.useAutotrain = 1 : Configs.useAutotrain = 0;
+    Configs.useAutotrain = autotrainToggler.checked;
     saveConfigs();
-    updateUI();
+    configsUpdateUI();
 };
+
+
+
+/* copy to clipboard button */
+document.getElementById('clipboardCopyBtn').onclick = () => resmanFieldCopyAll();
+
+
+
+/* process class buttons */
+document.getElementById('resman').addEventListener('click', (event) => {
+    if (event.target.classList.contains('classBtn')) {
+        resmanAddToField(event.target);
+    }
+});
+
+document.getElementById('resman').addEventListener('contextmenu', (event) => {
+    if (event.target.classList.contains('classBtn')) {
+        event.preventDefault();
+        resmanQuickCopy(event.target);
+    }
+});

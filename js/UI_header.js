@@ -1,24 +1,24 @@
 // UI_* files contain JS code for GUI elements, isolated from any actual functions
 
 /* show/hide UI blocks ("AppMode") */
-document.getElementById('appModeSwitcher').onclick = () => {
-    appModeSwitcher.checked ? Configs.currentAppMode = 1 : Configs.currentAppMode = 0;
+document.getElementById('appModeSwitcherHandler').onclick = () => {
+    Configs.currentAppMode = appModeSwitcher.checked;
     saveConfigs();
-    updateUI();
+    configsUpdateUI();
 };
 document.getElementById('appModeSwitcherHandler').oncontextmenu = () => {
-    appModeSwitcher.indeterminate ? 
-        (appModeSwitcher.checked ? Configs.currentAppMode = 1 : Configs.currentAppMode = 0)
+    appModeSwitcher.indeterminate 
+        ? (Configs.currentAppMode = appModeSwitcher.checked)
         : Configs.currentAppMode = 2; 
     saveConfigs();
-    updateUI();
+    configsUpdateUI();
 
     return false; // don't show context menu
 };
 
 /* show/hide menu popup button */
-document.getElementById('filemanTogglerBtn').onclick = function() {
-    document.getElementById('fileman').style.transform != 'translateY(-115%)'
+document.getElementById('filemanTogglerBtn').onclick = () => {
+    document.getElementById('fileman').style.transform === 'translateY(0%)'
         ? document.getElementById('fileman').style.transform = 'translateY(-115%)'
         : document.getElementById('fileman').style.transform = 'translateY(0%)';
 }
@@ -27,10 +27,10 @@ document.getElementById('filemanTogglerBtn').onclick = function() {
 document.getElementById('viewAsGridBtn').onclick = () => {
     Configs.resultsViewMode = 1;
     saveConfigs();
-    updateUI();
+    configsUpdateUI();
 };
 document.getElementById('viewAsListBtn').onclick = () => {
     Configs.resultsViewMode = 0;
     saveConfigs();
-    updateUI();
+    configsUpdateUI();
 };

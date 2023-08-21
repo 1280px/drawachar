@@ -1,31 +1,31 @@
 let Configs = {};
 
 const defaultConfigs = {
-    currentDataset: 1,      // DrawAchaR allows to quickly switch from one dataset to another | [DEFAULT - 1]; values supported by GUI - 1 to 8
-    currentAppMode: 1,      // Currently shown sections state | [DEFAULT - 1]; 0 - training mode; 1 - recognition mode; 2 - both (via right click)
-    resultsViewMode: 0,     // Show results as... | [DEFAULT - 0]; 0 - 4x4 grid; 1 - list
-    showDebug: 0,           // Show debugging info | [DEFAULT - 0]; 0 - hide; 1 - show
-    useAutoprediction: 1,   // Get predictions on-the-go, no "Predict" button | [DEFAULT - 1]; 0 - no; 1 - yes
-    useAutotrain: 1         // Add doodle as example after selecting the option | [DEFAULT - 1]; 0 - no; 1 - yes
+    currentDataset: 1,      // DrawAchaR allows to quickly switch from one dataset to another   | values supported by GUI - 1 to 6
+    currentAppMode: 1,      // Currently shown sections state   | 0 - training mode; 1 - recognition mode; 2 - both (via right click)
+    resultsViewMode: 0,     // View results as...   | 0 - 4x4 grid; 1 - list
+    showDebug: 0,           // Show debugging info  | 0 - hide; 1 - show
+    useAutoprediction: 1,   // Get predictions on-the-go, no "Predict" button   | 0 - no; 1 - yes
+    useAutotrain: 0         // Auto-add doodle as example after selecting class | 0 - no; 1 - yes
 }
 
 
 
 /* update UI correspondingly to current Configs data */
-function updateUI() {
+function configsUpdateUI() {
     if (Configs.currentAppMode == 0) {
         appModeSwitcher.checked = false;
         appModeSwitcher.indeterminate = false;
         document.getElementById('trainingMode').style.display = 'unset';
         document.getElementById('recognitionMode').style.display = 'none';
     }
-    if (Configs.currentAppMode == 1) {
+    else if (Configs.currentAppMode == 1) {
         appModeSwitcher.checked = true;
         appModeSwitcher.indeterminate = false;
         document.getElementById('trainingMode').style.display = 'none';
         document.getElementById('recognitionMode').style.display = 'unset';
     }
-    if (Configs.currentAppMode == 2) {
+    else {
         appModeSwitcher.indeterminate = true;
         document.getElementById('trainingMode').style.display = 'unset';
         document.getElementById('recognitionMode').style.display = 'unset';
@@ -45,10 +45,10 @@ function updateUI() {
 
     if (Configs.showDebug) {
         document.getElementById('debug').style.display = 'block';
-        document.getElementById('debugTogglerBtn').classList.add('selected');
+        document.getElementById('filemanToggleDebug').classList.add('selected');
     } else {
         document.getElementById('debug').style.display = 'none';
-        document.getElementById('debugTogglerBtn').classList.remove('selected');
+        document.getElementById('filemanToggleDebug').classList.remove('selected');
     }
 
     if (Configs.useAutoprediction) {
@@ -65,6 +65,4 @@ function updateUI() {
     } else {
         document.getElementById('autotrainToggler').checked = false;
     }
-
-    if (Configs.showDebug) console.log('[UIUpdater] UI updated successfully.')
 }
