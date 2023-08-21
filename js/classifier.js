@@ -39,8 +39,6 @@ async function predict() {
     }
 }
 
-
-
 /* results data formatter (remove zero-probs and sort by most probable) */
 function formatResultData(raw) {
     rawKeys = Object.keys(raw.confidences);
@@ -81,24 +79,6 @@ function addExample(cls) {
     } else {
         classifier.clearClass(cls);
         document.getElementById('typeman').getElementsByClassName(cls)[0].remove();
-    }
-}
-
-
-
-/* create buttons for all the result options */
-function outputResult(data) {
-    document.getElementById('resman').innerHTML = '';
-    for (let i in data) {
-        let newResultButton = document.createElement("button");
-        newResultButton.classList.add( data[i][0] );
-        newResultButton.title = data[i][0];
-        newResultButton.innerHTML = (`<big>${data[i][0]}</big><small>${(data[i][1]*100) + '%'}</small>`);
-
-        newResultButton.setAttribute('onclick', 'resultBtnOnSelect(this);');
-        newResultButton.setAttribute('oncontextmenu', 'quickCopy(this);');
-
-        document.getElementById('resman').appendChild(newResultButton);
     }
 }
 

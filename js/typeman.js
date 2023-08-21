@@ -73,7 +73,6 @@ function toggleClassRemover() {
 
 
 
-
 /* lazy typeman statistics updater */
 function updateTypemanStats(setName) {
     let setNameValue = (classifier.getClassExampleCount())[setName];

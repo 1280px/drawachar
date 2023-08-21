@@ -83,7 +83,3 @@ function resetCanvas() {
           document.getElementById('predictBtn').disabled = true;
     }
 }
-
-document.getElementById('clearDrawingPadBtn').onclick = function() {
-    resetCanvas();
-}

@@ -1,8 +1,3 @@
-function saveSets() {
-    let datasetJSON = JSON.stringify( Object.entries(classifier.getClassifierDataset()).map(([label, data])=>[label, Array.from(data.dataSync()), data.shape]) );
-    localStorage.setItem('dataset', datasetJSON);
-}
- 
 function loadSets() {
     if (localStorage.getItem('dataset') != null) {
         let datasetJSON = localStorage.getItem('dataset');
@@ -34,9 +29,13 @@ function loadSets() {
         typeman.innerHTML = '<h3>Nothing to train!&#13;Please&nbsp;add one or more examples you want to begin with.</h3>';
     }
 }
-
 function setsImporter(dataset) {
     for (i in dataset) {
         createClassBtn(i);
     }
+}
+
+function saveSets() {
+    let datasetJSON = JSON.stringify( Object.entries(classifier.getClassifierDataset()).map(([label, data])=>[label, Array.from(data.dataSync()), data.shape]) );
+    localStorage.setItem('dataset', datasetJSON);
 }
